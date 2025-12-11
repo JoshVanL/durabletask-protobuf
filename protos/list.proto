@@ -1,0 +1,35 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+syntax = "proto3";
+
+option csharp_namespace = "Dapr.DurableTask.Protobuf";
+option java_package = "io.dapr.durabletask.implementation.protobuf";
+option go_package = "/api/protos";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+
+// ListInstanceIDsRequest is used to list all orchestration instances.
+message ListInstanceIDsRequest {
+    // continuationToken is the continuation token to use for pagination. This
+    // is the token which the next page should start from. If not given, the
+    // first page will be returned.
+    optional string continuationToken = 1;
+
+    // pageSize is the maximum number of instances to return for this page. If
+    // not given, all instances will be attempted to be returned.
+    optional uint32 pageSize = 2;
+}
+
+// ListInstanceIDsResponse is the response to executing ListInstanceIDs.
+message ListInstanceIDsResponse {
+  // instanceIds is the list of instance IDs returned.
+  repeated string instanceIds = 1;
+
+  // continuationToken is the continuation token to use for pagination. If
+  // there are no more pages, this will be null.
+  optional string continuationToken = 2;
+}

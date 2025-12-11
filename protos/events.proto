@@ -1,0 +1,128 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+syntax = "proto3";
+
+option csharp_namespace = "Dapr.DurableTask.Protobuf";
+option java_package = "io.dapr.durabletask.implementation.protobuf";
+option go_package = "/api/protos";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+
+message ParentInstanceInfo {
+    int32 taskScheduledId = 1;
+    google.protobuf.StringValue name = 2;
+    OrchestrationInstance orchestrationInstance = 4;
+    optional string appID = 5;
+}
+
+message ExecutionStartedEvent {
+    string name = 1;
+    google.protobuf.StringValue input = 3;
+    OrchestrationInstance orchestrationInstance = 4;
+    optional ParentInstanceInfo parentInstance = 5;
+    google.protobuf.Timestamp scheduledStartTimestamp = 6;
+    TraceContext parentTraceContext = 7;
+    google.protobuf.StringValue orchestrationSpanID = 8;
+    map<string, string> tags = 9;
+}
+
+message ExecutionCompletedEvent {
+    OrchestrationStatus orchestrationStatus = 1;
+    google.protobuf.StringValue result = 2;
+    TaskFailureDetails failureDetails = 3;
+}
+
+message ExecutionTerminatedEvent {
+    google.protobuf.StringValue input = 1;
+    bool recurse = 2;
+}
+
+message TaskScheduledEvent {
+    string name = 1;
+    google.protobuf.StringValue input = 3;
+    TraceContext parentTraceContext = 4;
+    string taskExecutionID = 5;
+
+    // If defined, indicates that this task was the starting point of a new
+    // workflow execution as the result of a rerun operation.
+    optional RerunParentInstanceInfo rerunParentInstanceInfo = 6;
+}
+
+message TaskCompletedEvent {
+    int32 taskScheduledID = 1;
+    google.protobuf.StringValue result = 2;
+    string taskExecutionID = 3;
+}
+
+message TaskFailedEvent {
+    int32 taskScheduledID = 1;
+    TaskFailureDetails failureDetails = 2;
+    string taskExecutionID = 3;
+}
+
+message SubOrchestrationInstanceCreatedEvent {
+    string instanceID = 1;
+    string name = 2;
+    google.protobuf.StringValue input = 4;
+    TraceContext parentTraceContext = 5;
+}
+
+message SubOrchestrationInstanceCompletedEvent {
+    int32 taskScheduledID = 1;
+    google.protobuf.StringValue result = 2;
+}
+
+message SubOrchestrationInstanceFailedEvent {
+    int32 taskScheduledID = 1;
+    TaskFailureDetails failureDetails = 2;
+}
+
+message TimerCreatedEvent {
+    google.protobuf.Timestamp fireAt = 1;
+    optional string name = 2;
+
+    // If defined, indicates that this task was the starting point of a new
+    // workflow execution as the result of a rerun operation.
+    optional RerunParentInstanceInfo rerunParentInstanceInfo = 3;
+}
+
+message TimerFiredEvent {
+    google.protobuf.Timestamp fireAt = 1;
+    int32 timerID = 2;
+}
+
+message OrchestratorStartedEvent {
+    optional OrchestrationVersion version = 1;
+}
+
+message EventSentEvent {
+    string instanceID = 1;
+    string name = 2;
+    google.protobuf.StringValue input = 3;
+}
+
+message EventRaisedEvent {
+    string name = 1;
+    google.protobuf.StringValue input = 2;
+}
+
+message ContinueAsNewEvent {
+    google.protobuf.StringValue input = 1;
+}
+
+message ExecutionSuspendedEvent {
+    google.protobuf.StringValue input = 1;
+}
+
+message ExecutionResumedEvent {
+    google.protobuf.StringValue input = 1;
+}
+
+message ExecutionStalledEvent {
+    StalledReason reason = 1;
+    optional string description = 2;
+}

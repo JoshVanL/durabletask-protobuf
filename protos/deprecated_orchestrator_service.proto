@@ -1,0 +1,92 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+syntax = "proto3";
+
+option csharp_namespace = "Dapr.DurableTask.Protobuf";
+option java_package = "io.dapr.durabletask.implementation.protobuf";
+option go_package = "/api/protos";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+
+// Deprecated: Use Workflow service instead.
+service TaskHubSidecarService {
+    // Sends a hello request to the sidecar service.
+    rpc Hello(google.protobuf.Empty) returns (google.protobuf.Empty);
+
+    // Starts a new orchestration instance.
+    rpc StartInstance(CreateInstanceRequest) returns (CreateInstanceResponse);
+
+    // Gets the status of an existing orchestration instance.
+    rpc GetInstance(GetInstanceRequest) returns (GetInstanceResponse);
+
+    // Rewinds an orchestration instance to last known good state and replays from there.
+    rpc RewindInstance(RewindInstanceRequest) returns (RewindInstanceResponse);
+
+    // Waits for an orchestration instance to reach a running or completion state.
+    rpc WaitForInstanceStart(GetInstanceRequest) returns (GetInstanceResponse);
+
+    // Waits for an orchestration instance to reach a completion state (completed, failed, terminated, etc.).
+    rpc WaitForInstanceCompletion(GetInstanceRequest) returns (GetInstanceResponse);
+
+    // Raises an event to a running orchestration instance.
+    rpc RaiseEvent(RaiseEventRequest) returns (RaiseEventResponse);
+
+    // Terminates a running orchestration instance.
+    rpc TerminateInstance(TerminateRequest) returns (TerminateResponse);
+
+    // Suspends a running orchestration instance.
+    rpc SuspendInstance(SuspendRequest) returns (SuspendResponse);
+
+    // Resumes a suspended orchestration instance.
+    rpc ResumeInstance(ResumeRequest) returns (ResumeResponse);
+
+    // rpc DeleteInstance(DeleteInstanceRequest) returns (DeleteInstanceResponse);
+
+    rpc QueryInstances(QueryInstancesRequest) returns (QueryInstancesResponse);
+    rpc PurgeInstances(PurgeInstancesRequest) returns (PurgeInstancesResponse);
+
+    rpc GetWorkItems(GetWorkItemsRequest) returns (stream WorkItem);
+    rpc CompleteActivityTask(ActivityResponse) returns (CompleteTaskResponse);
+    rpc CompleteOrchestratorTask(OrchestratorResponse) returns (CompleteTaskResponse);
+    rpc CompleteEntityTask(EntityBatchResult) returns (CompleteTaskResponse);
+
+    // Gets the history of an orchestration instance as a stream of events.
+    rpc StreamInstanceHistory(StreamInstanceHistoryRequest) returns (stream HistoryChunk);
+
+    // Deletes and Creates the necessary resources for the orchestration service and the instance store
+    rpc CreateTaskHub(CreateTaskHubRequest) returns (CreateTaskHubResponse);
+
+    // Deletes the resources for the orchestration service and optionally the instance store
+    rpc DeleteTaskHub(DeleteTaskHubRequest) returns (DeleteTaskHubResponse);
+
+    // sends a signal to an entity
+    rpc SignalEntity(SignalEntityRequest) returns (SignalEntityResponse);
+
+    // get information about a specific entity
+    rpc GetEntity(GetEntityRequest) returns (GetEntityResponse);
+
+    // query entities
+    rpc QueryEntities(QueryEntitiesRequest) returns (QueryEntitiesResponse);
+
+    // clean entity storage
+    rpc CleanEntityStorage(CleanEntityStorageRequest) returns (CleanEntityStorageResponse);
+
+    // Abandons a single work item
+    rpc AbandonTaskActivityWorkItem(AbandonActivityTaskRequest) returns (AbandonActivityTaskResponse);
+
+    // Abandon an orchestration work item
+    rpc AbandonTaskOrchestratorWorkItem(AbandonOrchestrationTaskRequest) returns (AbandonOrchestrationTaskResponse);
+
+    // Abandon an entity work item
+    rpc AbandonTaskEntityWorkItem(AbandonEntityTaskRequest) returns (AbandonEntityTaskResponse);
+
+    // Rerun a Workflow from a specific event ID of a workflow instance.
+    rpc RerunWorkflowFromEvent(RerunWorkflowFromEventRequest) returns (RerunWorkflowFromEventResponse);
+
+    rpc ListInstanceIDs (ListInstanceIDsRequest) returns (ListInstanceIDsResponse);
+    rpc GetInstanceHistory (GetInstanceHistoryRequest) returns (GetInstanceHistoryResponse);
+}

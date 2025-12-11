@@ -1,0 +1,48 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+syntax = "proto3";
+
+option csharp_namespace = "Dapr.DurableTask.Protobuf";
+option java_package = "io.dapr.durabletask.implementation.protobuf";
+option go_package = "/api/protos";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+
+service Workflows {
+  // Starts a new workflow instance.
+  rpc StartInstance(CreateInstanceRequest) returns (CreateInstanceResponse);
+
+  // Gets the status of an existing workflow instance.
+  rpc GetInstance(GetInstanceRequest) returns (GetInstanceResponse);
+
+  // Waits for an workflow instance to reach a running or completion state.
+  rpc WaitForInstanceStart(GetInstanceRequest) returns (GetInstanceResponse);
+
+  // Waits for an workflow instance to reach a completion state (completed, failed, terminated, etc.).
+  rpc WaitForInstanceCompletion(GetInstanceRequest) returns (GetInstanceResponse);
+
+  // Raises an event to a running workflow instance.
+  rpc RaiseEvent(RaiseEventRequest) returns (RaiseEventResponse);
+
+  // Terminates a running workflow instance.
+  rpc TerminateInstance(TerminateRequest) returns (TerminateResponse);
+
+  // Suspends a running workflow instance.
+  rpc SuspendInstance(SuspendRequest) returns (SuspendResponse);
+
+  // Resumes a suspended workflow instance.
+  rpc ResumeInstance(ResumeRequest) returns (ResumeResponse);
+
+  // Rerun a Workflow from a specific event ID of a workflow instance.
+  rpc RerunWorkflowFromEvent(RerunWorkflowFromEventRequest) returns (RerunWorkflowFromEventResponse);
+
+  // List all workflow instance IDs.
+  rpc ListInstanceIDs (ListInstanceIDsRequest) returns (ListInstanceIDsResponse);
+
+  // Gets the full history of a workflow instance.
+  rpc GetInstanceHistory (GetInstanceHistoryRequest) returns (GetInstanceHistoryResponse);
+}

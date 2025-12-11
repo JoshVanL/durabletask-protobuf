@@ -1,0 +1,58 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+syntax = "proto3";
+
+option csharp_namespace = "Dapr.DurableTask.Protobuf";
+option java_package = "io.dapr.durabletask.implementation.protobuf";
+option go_package = "/api/protos";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+
+// Worker service implements the Durable Task Workflow workers.
+service Worker {
+  rpc GetWorkItems(GetWorkItemsRequest) returns (stream WorkItem);
+  rpc CompleteActivityTask(ActivityResponse) returns (CompleteTaskResponse);
+  rpc CompleteOrchestratorTask(OrchestratorResponse) returns (CompleteTaskResponse);
+  rpc CompleteEntityTask(EntityBatchResult) returns (CompleteTaskResponse);
+}
+
+message GetWorkItemsRequest {}
+
+message WorkItem {
+  // Fields up to 10 are taken. Use 11 next.
+  oneof request {
+    OrchestratorRequest orchestratorRequest = 1;
+    ActivityRequest activityRequest = 2;
+  }
+}
+
+message OrchestratorRequest {
+  string instanceId = 1;
+  google.protobuf.StringValue executionId = 2;
+  repeated HistoryEvent pastEvents = 3;
+  repeated HistoryEvent newEvents = 4;
+  optional TaskRouter router = 7;
+}
+
+message ActivityRequest {
+  string name = 1;
+  google.protobuf.StringValue input = 3;
+  OrchestrationInstance orchestrationInstance = 4;
+  int32 eventID = 5;
+  TraceContext parentTraceContext = 6;
+  string taskExecutionID = 7;
+}
+
+message ActivityResponse {
+    string instanceId = 1;
+    int32 taskId = 2;
+    google.protobuf.StringValue result = 3;
+    TaskFailureDetails failureDetails = 4;
+    // Field 5 is taken, use 6 next.
+}
+
+message CompleteTaskResponse {}

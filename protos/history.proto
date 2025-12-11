@@ -1,0 +1,43 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
+syntax = "proto3";
+
+option csharp_namespace = "Dapr.DurableTask.Protobuf";
+option java_package = "io.dapr.durabletask.implementation.protobuf";
+option go_package = "/api/protos";
+
+message HistoryEvent {
+  // Unused fields have been removed so some numbers have been skip. When
+  // adding new fields, please use the next available highest number.
+  int32 eventId = 1;
+  google.protobuf.Timestamp timestamp = 2;
+
+  oneof eventType {
+    ExecutionStartedEvent executionStarted = 3;
+    ExecutionCompletedEvent executionCompleted = 4;
+    ExecutionTerminatedEvent executionTerminated = 5;
+    TaskScheduledEvent taskScheduled = 6;
+    TaskCompletedEvent taskCompleted = 7;
+    TaskFailedEvent taskFailed = 8;
+    SubOrchestrationInstanceCreatedEvent subOrchestrationInstanceCreated = 9;
+    SubOrchestrationInstanceCompletedEvent subOrchestrationInstanceCompleted = 10;
+    SubOrchestrationInstanceFailedEvent subOrchestrationInstanceFailed = 11;
+    TimerCreatedEvent timerCreated = 12;
+    TimerFiredEvent timerFired = 13;
+    OrchestratorStartedEvent orchestratorStarted = 14;
+    EventSentEvent eventSent = 16;
+    EventRaisedEvent eventRaised = 17;
+    ContinueAsNewEvent continueAsNew = 20;
+    ExecutionSuspendedEvent executionSuspended = 21;
+    ExecutionResumedEvent executionResumed = 22;
+    ExecutionStalledEvent executionStalled = 31;
+  }
+
+  optional TaskRouter router = 30;
+}
+
+message TaskRouter {
+    string sourceAppID = 1;
+    optional string targetAppID = 2;
+}
