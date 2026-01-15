@@ -796,6 +796,7 @@ service TaskHubSidecarService {
 
     // Rerun a Workflow from a specific event ID of a workflow instance.
     rpc RerunWorkflowFromEvent(RerunWorkflowFromEventRequest) returns (RerunWorkflowFromEventResponse);
+    rpc RerunWorkflowAfterEvent(RerunWorkflowAfterEventRequest) returns (RerunWorkflowAfterEventResponse);
 
     rpc ListInstanceIDs (ListInstanceIDsRequest) returns (ListInstanceIDsResponse);
     rpc GetInstanceHistory (GetInstanceHistoryRequest) returns (GetInstanceHistoryResponse);
@@ -883,6 +884,17 @@ message RerunWorkflowFromEventRequest {
 // RerunWorkflowFromEventResponse is the response to executing
 // RerunWorkflowFromEvent.
 message RerunWorkflowFromEventResponse {
+    string newInstanceID = 1;
+}
+
+message RerunWorkflowAfterEventRequest {
+  string sourceInstanceID = 1;
+  uint32 eventID = 2;
+  optional string newInstanceID = 3;
+  google.protobuf.StringValue output = 4;
+  bool overwriteOutput = 5;
+}
+message RerunWorkflowAfterEventResponse {
     string newInstanceID = 1;
 }
 
