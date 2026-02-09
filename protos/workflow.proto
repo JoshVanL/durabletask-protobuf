@@ -7,14 +7,18 @@ option csharp_namespace = "Dapr.DurableTask.Protobuf";
 option java_package = "io.dapr.durabletask.implementation.protobuf";
 option go_package = "/api/protos";
 
-import "google/protobuf/timestamp.proto";
-import "google/protobuf/duration.proto";
-import "google/protobuf/wrappers.proto";
-import "google/protobuf/empty.proto";
+import "schedule.proto";
+import "actions.proto";
+import "raise.proto";
+import "terminate.proto";
+import "suspend.proto";
+import "resume.proto";
+import "rerun.proto";
+import "list.proto";
 
 service Workflows {
   // Starts a new workflow instance.
-  rpc StartInstance(CreateInstanceRequest) returns (CreateInstanceResponse);
+  rpc ScheduleInstance(ScheduleInstanceRequest) returns (ScheduleInstanceResponse);
 
   // Gets the status of an existing workflow instance.
   rpc GetInstance(GetInstanceRequest) returns (GetInstanceResponse);

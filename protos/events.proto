@@ -8,30 +8,33 @@ option java_package = "io.dapr.durabletask.implementation.protobuf";
 option go_package = "/api/protos";
 
 import "google/protobuf/timestamp.proto";
-import "google/protobuf/duration.proto";
 import "google/protobuf/wrappers.proto";
-import "google/protobuf/empty.proto";
+
+import "state.proto";
+import "tracing.proto";
+import "rerun.proto";
+import "version.proto";
 
 message ParentInstanceInfo {
     int32 taskScheduledId = 1;
     google.protobuf.StringValue name = 2;
-    OrchestrationInstance orchestrationInstance = 4;
+    WorkflowInstance workflowInstance = 4;
     optional string appID = 5;
 }
 
 message ExecutionStartedEvent {
     string name = 1;
     google.protobuf.StringValue input = 3;
-    OrchestrationInstance orchestrationInstance = 4;
+    WorkflowInstance workflowInstance = 4;
     optional ParentInstanceInfo parentInstance = 5;
     google.protobuf.Timestamp scheduledStartTimestamp = 6;
     TraceContext parentTraceContext = 7;
-    google.protobuf.StringValue orchestrationSpanID = 8;
+    google.protobuf.StringValue workflowSpanID = 8;
     map<string, string> tags = 9;
 }
 
 message ExecutionCompletedEvent {
-    OrchestrationStatus orchestrationStatus = 1;
+    WorkflowStatus workflowStatus = 1;
     google.protobuf.StringValue result = 2;
     TaskFailureDetails failureDetails = 3;
 }
@@ -64,19 +67,19 @@ message TaskFailedEvent {
     string taskExecutionID = 3;
 }
 
-message SubOrchestrationInstanceCreatedEvent {
+message SubWorkflowInstanceCreatedEvent {
     string instanceID = 1;
     string name = 2;
     google.protobuf.StringValue input = 4;
     TraceContext parentTraceContext = 5;
 }
 
-message SubOrchestrationInstanceCompletedEvent {
+message SubWorkflowInstanceCompletedEvent {
     int32 taskScheduledID = 1;
     google.protobuf.StringValue result = 2;
 }
 
-message SubOrchestrationInstanceFailedEvent {
+message SubWorkflowInstanceFailedEvent {
     int32 taskScheduledID = 1;
     TaskFailureDetails failureDetails = 2;
 }
@@ -96,7 +99,7 @@ message TimerFiredEvent {
 }
 
 message OrchestratorStartedEvent {
-    optional OrchestrationVersion version = 1;
+    optional WorkflowVersion version = 1;
 }
 
 message EventSentEvent {

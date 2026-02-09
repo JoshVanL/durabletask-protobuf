@@ -9,38 +9,37 @@ option csharp_namespace = "Dapr.DurableTask.Protobuf";
 option java_package = "io.dapr.durabletask.implementation.protobuf";
 option go_package = "/api/protos";
 
-import "orchestrator_service.proto";
-
+import "worfkflow.proto";
 
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
 
 // gRPC service used by Durable Task Framework (DTFx) backend implementations.
-// The RPCs in this service are used by DTFx backends to manage orchestration state.
+// The RPCs in this service are used by DTFx backends to manage workflow state.
 service BackendService {
-    // Creates a new orchestration instance.
-    rpc CreateInstance (CreateInstanceRequest) returns (CreateInstanceResponse);
+    // Creates a new workflow instance.
+    rpc ScheduleInstance (ScheduleInstanceRequest) returns (ScheduleInstanceResponse);
 
-    // Sends an event to an orchestration instance. This RPC is used for raising external events to orchestrations
-    // and for sending orchestration lifecycle events, such as terminate, suspend, resume, etc.
+    // Sends an event to an workflow instance. This RPC is used for raising external events to workflows
+    // and for sending workflow lifecycle events, such as terminate, suspend, resume, etc.
     rpc AddEvent (AddEventRequest) returns (AddEventResponse);
 
-    // Returns metadata about an orchestration instance.
+    // Returns metadata about an workflow instance.
     rpc GetInstance (GetInstanceRequest) returns (GetInstanceResponse);
 
     // Returns metadata about an entity instance.
     rpc GetEntity (GetEntityRequest) returns (GetEntityResponse);
 
-    // Returns metadata about multiple orchestration instances using a query.
+    // Returns metadata about multiple workflow instances using a query.
     rpc QueryInstances (QueryInstancesRequest) returns (QueryInstancesResponse);
 
     // Returns metadata for multiple entities using a query.
     rpc QueryEntities(QueryEntitiesRequest) returns (QueryEntitiesResponse);
 
-    // Waits for an orchestration to reach a terminal state and then returns metadata for that orchestration.
+    // Waits for an workflow to reach a terminal state and then returns metadata for that workflow.
     rpc WaitForInstance (WaitForInstanceRequest) returns (WaitForInstanceResponse);
 
-    // Purges the state of one or more orchestration instances.
+    // Purges the state of one or more workflow instances.
     rpc PurgeInstances (PurgeInstancesRequest) returns (PurgeInstancesResponse);
 
     // Cleans entity storage.
@@ -49,23 +48,23 @@ service BackendService {
     // Starts a server stream for receiving work items
     rpc GetWorkItems (GetWorkItemsRequest) returns (stream WorkItem);
 
-    // Gets orchestration runtime state (history, etc.) for a given orchestration instance.
-    rpc GetOrchestrationRuntimeState (GetOrchestrationRuntimeStateRequest) returns (GetOrchestrationRuntimeStateResponse);
+    // Gets workflow runtime state (history, etc.) for a given workflow instance.
+    rpc GetWorkflowRuntimeState (GetWorkflowRuntimeStateRequest) returns (GetWorkflowRuntimeStateResponse);
 
-    // Gets the history of an orchestration instance as a stream of events.
+    // Gets the history of an workflow instance as a stream of events.
     rpc StreamInstanceHistory(StreamInstanceHistoryRequest) returns (stream HistoryChunk);
 
-    // Completes an outstanding activity work item and adds a new event to the target orchestration's inbox.
+    // Completes an outstanding activity work item and adds a new event to the target workflow's inbox.
     rpc CompleteActivityWorkItem (CompleteActivityWorkItemRequest) returns (CompleteActivityWorkItemResponse);
 
     // Abandons an outstanding activity work item. Abandoned work items will be delivered again after some delay.
     rpc AbandonActivityWorkItem (AbandonActivityWorkItemRequest) returns (AbandonActivityWorkItemResponse);
 
-    // Completes an outstanding orchestrator work item, and adds a new event to the target orchestration's inbox.
-    rpc CompleteOrchestrationWorkItem (CompleteOrchestrationWorkItemRequest) returns (CompleteOrchestrationWorkItemResponse);
+    // Completes an outstanding orchestrator work item, and adds a new event to the target workflow's inbox.
+    rpc CompleteWorkflowWorkItem (CompleteWorkflowWorkItemRequest) returns (CompleteWorkflowWorkItemResponse);
 
     // Abandons an outstanding orchestrator work item. Abandoned work items will be delivered again after some delay.
-    rpc AbandonOrchestrationWorkItem (AbandonOrchestrationWorkItemRequest) returns (AbandonOrchestrationWorkItemResponse);
+    rpc AbandonWorkflowWorkItem (AbandonWorkflowWorkItemRequest) returns (AbandonWorkflowWorkItemResponse);
 
     // Completes an outstanding entity work item.
     rpc CompleteEntityWorkItem (CompleteEntityWorkItemRequest) returns (CompleteEntityWorkItemResponse);
@@ -83,15 +82,15 @@ service BackendService {
     rpc GetInstanceHistory (GetInstanceHistoryRequest) returns (GetInstanceHistoryResponse);
 }
 
-// Request payload for adding new orchestration events.
+// Request payload for adding new workflow events.
 message AddEventRequest {
-    // The ID of the orchestration to send an event to.
-    OrchestrationInstance instance = 1;
-    // The event to send to the orchestration.
+    // The ID of the workflow to send an event to.
+    WorkflowInstance instance = 1;
+    // The event to send to the workflow.
     HistoryEvent event = 2;
 }
 
-// Response payload for adding new orchestration events.
+// Response payload for adding new workflow events.
 message AddEventResponse {
     // No fields
 }
@@ -105,18 +104,18 @@ message WaitForInstanceRequest {
 // Response payload for waiting for instance completion.
 message WaitForInstanceResponse {
     bool exists = 1;
-    OrchestrationState orchestrationState = 2;
+    WorkflowState workflowState = 2;
 }
 
-// Request parameters for fetching orchestration runtime state.
-message GetOrchestrationRuntimeStateRequest {
-    // The ID of the target orchestration instance.
-    OrchestrationInstance instance = 1;
+// Request parameters for fetching workflow runtime state.
+message GetWorkflowRuntimeStateRequest {
+    // The ID of the target workflow instance.
+    WorkflowInstance instance = 1;
 }
 
-// Response payload returned when fetching orchestration runtime state.
-message GetOrchestrationRuntimeStateResponse {
-    // The existing history events for the target orchestration instance.
+// Response payload returned when fetching workflow runtime state.
+message GetWorkflowRuntimeStateResponse {
+    // The existing history events for the target workflow instance.
     repeated HistoryEvent history = 1;
 }
 
@@ -146,12 +145,12 @@ message AbandonActivityWorkItemResponse {
 	// No fields
 }
 
-// Request payload for completing an orchestration work item.
-message CompleteOrchestrationWorkItemRequest {
+// Request payload for completing an workflow work item.
+message CompleteWorkflowWorkItemRequest {
     // The completion token that was provided when the work item was fetched.
     string completionToken = 1;
-    OrchestrationInstance instance = 2;
-    OrchestrationStatus runtimeStatus = 3;
+    WorkflowInstance instance = 2;
+    WorkflowStatus runtimeStatus = 3;
     google.protobuf.StringValue customStatus = 4;
     repeated HistoryEvent newHistory = 5;
     repeated HistoryEvent newTasks = 6;
@@ -163,27 +162,27 @@ message CompleteOrchestrationWorkItemRequest {
     google.protobuf.Int32Value numEventsProcessed = 9;
 }
 
-// Response payload for completing an orchestration work item.
-message CompleteOrchestrationWorkItemResponse {
+// Response payload for completing an workflow work item.
+message CompleteWorkflowWorkItemResponse {
 	// No fields
 }
 
-// A message to be delivered to an orchestration by the backend.
+// A message to be delivered to an workflow by the backend.
 message OrchestratorMessage {
-    // The ID of the orchestration instance to receive the message.
-    OrchestrationInstance instance = 1;
-    // The event payload to be received by the target orchestration.
+    // The ID of the workflow instance to receive the message.
+    WorkflowInstance instance = 1;
+    // The event payload to be received by the target workflow.
     HistoryEvent event = 2;
 }
 
-// Request payload for abandoning an orchestration work item.
-message AbandonOrchestrationWorkItemRequest {
+// Request payload for abandoning an workflow work item.
+message AbandonWorkflowWorkItemRequest {
     // The completion token that was provided when the work item was fetched.
     string completionToken = 1;
 }
 
-// Response payload for abandoning an orchestration work item.
-message AbandonOrchestrationWorkItemResponse {
+// Response payload for abandoning an workflow work item.
+message AbandonWorkflowWorkItemResponse {
 	// No fields
 }
 
@@ -216,7 +215,7 @@ message CompleteEntityWorkItemResponse {
 // Request payload for abandoning an entity work item.
 message AbandonEntityWorkItemRequest {
     // The completion token that was provided when the work item was fetched.
-    string completionToken = 1;   
+    string completionToken = 1;
     string reason = 2;
 }
 
@@ -244,13 +243,13 @@ message WorkflowState {
 
 message CreateWorkflowInstanceRequest {
   HistoryEvent startEvent = 1;
-  optional OrchestrationIdReusePolicy policy = 2;
+  optional WorkflowIdReusePolicy policy = 2;
 }
 
-message OrchestrationMetadata {
+message WorkflowMetadata {
   string instanceId = 1;
   string name = 2;
-  OrchestrationStatus runtimeStatus = 3;
+  WorkflowStatus runtimeStatus = 3;
   google.protobuf.Timestamp createdAt = 4;
   google.protobuf.Timestamp lastUpdatedAt = 5;
   google.protobuf.StringValue input = 6;

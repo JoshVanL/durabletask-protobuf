@@ -7,6 +7,10 @@ option csharp_namespace = "Dapr.DurableTask.Protobuf";
 option java_package = "io.dapr.durabletask.implementation.protobuf";
 option go_package = "/api/protos";
 
+import "google/protobuf/timestamp.proto";
+
+import "events.proto";
+
 message HistoryEvent {
   // Unused fields have been removed so some numbers have been skip. When
   // adding new fields, please use the next available highest number.
@@ -20,9 +24,9 @@ message HistoryEvent {
     TaskScheduledEvent taskScheduled = 6;
     TaskCompletedEvent taskCompleted = 7;
     TaskFailedEvent taskFailed = 8;
-    SubOrchestrationInstanceCreatedEvent subOrchestrationInstanceCreated = 9;
-    SubOrchestrationInstanceCompletedEvent subOrchestrationInstanceCompleted = 10;
-    SubOrchestrationInstanceFailedEvent subOrchestrationInstanceFailed = 11;
+    SubWorkflowInstanceCreatedEvent subWorkflowInstanceCreated = 9;
+    SubWorkflowInstanceCompletedEvent subWorkflowInstanceCompleted = 10;
+    SubWorkflowInstanceFailedEvent subWorkflowInstanceFailed = 11;
     TimerCreatedEvent timerCreated = 12;
     TimerFiredEvent timerFired = 13;
     OrchestratorStartedEvent orchestratorStarted = 14;

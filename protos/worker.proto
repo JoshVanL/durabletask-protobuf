@@ -7,17 +7,18 @@ option csharp_namespace = "Dapr.DurableTask.Protobuf";
 option java_package = "io.dapr.durabletask.implementation.protobuf";
 option go_package = "/api/protos";
 
-import "google/protobuf/timestamp.proto";
-import "google/protobuf/duration.proto";
 import "google/protobuf/wrappers.proto";
-import "google/protobuf/empty.proto";
+
+import "history.proto";
+import "state.proto";
+import "tracing.proto";
+import "actions.proto";
 
 // Worker service implements the Durable Task Workflow workers.
 service Worker {
   rpc GetWorkItems(GetWorkItemsRequest) returns (stream WorkItem);
   rpc CompleteActivityTask(ActivityResponse) returns (CompleteTaskResponse);
   rpc CompleteOrchestratorTask(OrchestratorResponse) returns (CompleteTaskResponse);
-  rpc CompleteEntityTask(EntityBatchResult) returns (CompleteTaskResponse);
 }
 
 message GetWorkItemsRequest {}
@@ -41,7 +42,7 @@ message OrchestratorRequest {
 message ActivityRequest {
   string name = 1;
   google.protobuf.StringValue input = 3;
-  OrchestrationInstance orchestrationInstance = 4;
+  WorkflowInstance workflowInstance = 4;
   int32 eventID = 5;
   TraceContext parentTraceContext = 6;
   string taskExecutionID = 7;

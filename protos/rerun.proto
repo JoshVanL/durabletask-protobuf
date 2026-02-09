@@ -7,16 +7,13 @@ option csharp_namespace = "Dapr.DurableTask.Protobuf";
 option java_package = "io.dapr.durabletask.implementation.protobuf";
 option go_package = "/api/protos";
 
-import "google/protobuf/timestamp.proto";
-import "google/protobuf/duration.proto";
 import "google/protobuf/wrappers.proto";
-import "google/protobuf/empty.proto";
 
 // RerunWorkflowFromEventRequest is used to rerun a workflow instance from a
 // specific event ID.
 message RerunWorkflowFromEventRequest {
-  // sourceInstanceID is the orchestration instance ID to rerun. Can be a top
-  // level instance, or sub-orchestration instance.
+  // sourceInstanceID is the workflow instance ID to rerun. Can be a top
+  // level instance, or sub-workflow instance.
   string sourceInstanceID = 1;
 
   // the event id to start the new workflow instance from.
@@ -43,11 +40,11 @@ message RerunWorkflowFromEventResponse {
     string newInstanceID = 1;
 }
 
-// RerunParentInstanceInfo is used to indicate that this orchestration was
+// RerunParentInstanceInfo is used to indicate that this workflow was
 // started as part of a rerun operation. Contains information about the parent
-// orchestration instance which was rerun.
+// workflow instance which was rerun.
 message RerunParentInstanceInfo {
-  // instanceID is the orchestration instance ID this orchestration has been
+  // instanceID is the workflow instance ID this workflow has been
   // rerun from.
   string instanceID = 1;
 }

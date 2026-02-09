@@ -7,12 +7,9 @@ option csharp_namespace = "Dapr.DurableTask.Protobuf";
 option java_package = "io.dapr.durabletask.implementation.protobuf";
 option go_package = "/api/protos";
 
-import "google/protobuf/timestamp.proto";
-import "google/protobuf/duration.proto";
 import "google/protobuf/wrappers.proto";
-import "google/protobuf/empty.proto";
 
-message OrchestrationInstance {
+message WorkflowInstance {
     string instanceId = 1;
     google.protobuf.StringValue executionId = 2;
 }
@@ -25,18 +22,14 @@ message TaskFailureDetails {
     bool isNonRetriable = 5;
 }
 
-enum StalledReason {
-    PATCH_MISMATCH = 0;
-}
-
-enum OrchestrationStatus {
-    ORCHESTRATION_STATUS_RUNNING = 0;
-    ORCHESTRATION_STATUS_COMPLETED = 1;
-    ORCHESTRATION_STATUS_CONTINUED_AS_NEW = 2;
-    ORCHESTRATION_STATUS_FAILED = 3;
-    ORCHESTRATION_STATUS_CANCELED = 4;
-    ORCHESTRATION_STATUS_TERMINATED = 5;
-    ORCHESTRATION_STATUS_PENDING = 6;
-    ORCHESTRATION_STATUS_SUSPENDED = 7;
-    ORCHESTRATION_STATUS_STALLED = 8;
+enum WorkflowStatus {
+    WORKFLOW_STATUS_RUNNING = 0;
+    WORKFLOW_STATUS_COMPLETED = 1;
+    WORKFLOW_STATUS_CONTINUED_AS_NEW = 2;
+    WORKFLOW_STATUS_FAILED = 3;
+    WORKFLOW_STATUS_CANCELED = 4;
+    WORKFLOW_STATUS_TERMINATED = 5;
+    WORKFLOW_STATUS_PENDING = 6;
+    WORKFLOW_STATUS_SUSPENDED = 7;
+    WORKFLOW_STATUS_STALLED = 8;
 }

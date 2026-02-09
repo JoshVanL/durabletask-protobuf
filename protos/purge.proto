@@ -8,9 +8,8 @@ option java_package = "io.dapr.durabletask.implementation.protobuf";
 option go_package = "/api/protos";
 
 import "google/protobuf/timestamp.proto";
-import "google/protobuf/duration.proto";
-import "google/protobuf/wrappers.proto";
-import "google/protobuf/empty.proto";
+
+import "state.proto";
 
 message PurgeInstancesRequest {
     oneof request {
@@ -36,7 +35,7 @@ message PurgeInstancesRequest {
 message PurgeInstanceFilter {
     google.protobuf.Timestamp createdTimeFrom = 1;
     google.protobuf.Timestamp createdTimeTo = 2;
-    repeated OrchestrationStatus runtimeStatus = 3;
+    repeated WorkflowStatus runtimeStatus = 3;
 }
 
 message PurgeInstancesResponse {

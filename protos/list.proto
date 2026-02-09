@@ -7,12 +7,7 @@ option csharp_namespace = "Dapr.DurableTask.Protobuf";
 option java_package = "io.dapr.durabletask.implementation.protobuf";
 option go_package = "/api/protos";
 
-import "google/protobuf/timestamp.proto";
-import "google/protobuf/duration.proto";
-import "google/protobuf/wrappers.proto";
-import "google/protobuf/empty.proto";
-
-// ListInstanceIDsRequest is used to list all orchestration instances.
+// ListInstanceIDsRequest is used to list all workflow instances.
 message ListInstanceIDsRequest {
     // continuationToken is the continuation token to use for pagination. This
     // is the token which the next page should start from. If not given, the

@@ -17,31 +17,31 @@ service TaskHubSidecarService {
     // Sends a hello request to the sidecar service.
     rpc Hello(google.protobuf.Empty) returns (google.protobuf.Empty);
 
-    // Starts a new orchestration instance.
+    // Starts a new workflow instance.
     rpc StartInstance(CreateInstanceRequest) returns (CreateInstanceResponse);
 
-    // Gets the status of an existing orchestration instance.
+    // Gets the status of an existing workflow instance.
     rpc GetInstance(GetInstanceRequest) returns (GetInstanceResponse);
 
-    // Rewinds an orchestration instance to last known good state and replays from there.
+    // Rewinds an workflow instance to last known good state and replays from there.
     rpc RewindInstance(RewindInstanceRequest) returns (RewindInstanceResponse);
 
-    // Waits for an orchestration instance to reach a running or completion state.
+    // Waits for an workflow instance to reach a running or completion state.
     rpc WaitForInstanceStart(GetInstanceRequest) returns (GetInstanceResponse);
 
-    // Waits for an orchestration instance to reach a completion state (completed, failed, terminated, etc.).
+    // Waits for an workflow instance to reach a completion state (completed, failed, terminated, etc.).
     rpc WaitForInstanceCompletion(GetInstanceRequest) returns (GetInstanceResponse);
 
-    // Raises an event to a running orchestration instance.
+    // Raises an event to a running workflow instance.
     rpc RaiseEvent(RaiseEventRequest) returns (RaiseEventResponse);
 
-    // Terminates a running orchestration instance.
+    // Terminates a running workflow instance.
     rpc TerminateInstance(TerminateRequest) returns (TerminateResponse);
 
-    // Suspends a running orchestration instance.
+    // Suspends a running workflow instance.
     rpc SuspendInstance(SuspendRequest) returns (SuspendResponse);
 
-    // Resumes a suspended orchestration instance.
+    // Resumes a suspended workflow instance.
     rpc ResumeInstance(ResumeRequest) returns (ResumeResponse);
 
     // rpc DeleteInstance(DeleteInstanceRequest) returns (DeleteInstanceResponse);
@@ -54,13 +54,13 @@ service TaskHubSidecarService {
     rpc CompleteOrchestratorTask(OrchestratorResponse) returns (CompleteTaskResponse);
     rpc CompleteEntityTask(EntityBatchResult) returns (CompleteTaskResponse);
 
-    // Gets the history of an orchestration instance as a stream of events.
+    // Gets the history of an workflow instance as a stream of events.
     rpc StreamInstanceHistory(StreamInstanceHistoryRequest) returns (stream HistoryChunk);
 
-    // Deletes and Creates the necessary resources for the orchestration service and the instance store
+    // Deletes and Creates the necessary resources for the workflow service and the instance store
     rpc CreateTaskHub(CreateTaskHubRequest) returns (CreateTaskHubResponse);
 
-    // Deletes the resources for the orchestration service and optionally the instance store
+    // Deletes the resources for the workflow service and optionally the instance store
     rpc DeleteTaskHub(DeleteTaskHubRequest) returns (DeleteTaskHubResponse);
 
     // sends a signal to an entity
@@ -78,8 +78,8 @@ service TaskHubSidecarService {
     // Abandons a single work item
     rpc AbandonTaskActivityWorkItem(AbandonActivityTaskRequest) returns (AbandonActivityTaskResponse);
 
-    // Abandon an orchestration work item
-    rpc AbandonTaskOrchestratorWorkItem(AbandonOrchestrationTaskRequest) returns (AbandonOrchestrationTaskResponse);
+    // Abandon an workflow work item
+    rpc AbandonTaskOrchestratorWorkItem(AbandonWorkflowTaskRequest) returns (AbandonWorkflowTaskResponse);
 
     // Abandon an entity work item
     rpc AbandonTaskEntityWorkItem(AbandonEntityTaskRequest) returns (AbandonEntityTaskResponse);
