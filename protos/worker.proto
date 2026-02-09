@@ -18,7 +18,7 @@ import "actions.proto";
 service Worker {
   rpc GetWorkItems(GetWorkItemsRequest) returns (stream WorkItem);
   rpc CompleteActivityTask(ActivityResponse) returns (CompleteTaskResponse);
-  rpc CompleteOrchestratorTask(OrchestratorResponse) returns (CompleteTaskResponse);
+  rpc CompleteWorkflowTask(WorkflowResponse) returns (CompleteTaskResponse);
 }
 
 message GetWorkItemsRequest {}
@@ -26,12 +26,12 @@ message GetWorkItemsRequest {}
 message WorkItem {
   // Fields up to 10 are taken. Use 11 next.
   oneof request {
-    OrchestratorRequest orchestratorRequest = 1;
+    WorkflowRequest workflowRequest = 1;
     ActivityRequest activityRequest = 2;
   }
 }
 
-message OrchestratorRequest {
+message WorkflowRequest {
   string instanceId = 1;
   google.protobuf.StringValue executionId = 2;
   repeated HistoryEvent pastEvents = 3;

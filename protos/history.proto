@@ -24,12 +24,12 @@ message HistoryEvent {
     TaskScheduledEvent taskScheduled = 6;
     TaskCompletedEvent taskCompleted = 7;
     TaskFailedEvent taskFailed = 8;
-    SubWorkflowInstanceCreatedEvent subWorkflowInstanceCreated = 9;
-    SubWorkflowInstanceCompletedEvent subWorkflowInstanceCompleted = 10;
-    SubWorkflowInstanceFailedEvent subWorkflowInstanceFailed = 11;
+    ChildWorkflowInstanceCreatedEvent childWorkflowInstanceCreated = 9;
+    ChildWorkflowInstanceCompletedEvent childWorkflowInstanceCompleted = 10;
+    ChildWorkflowInstanceFailedEvent childWorkflowInstanceFailed = 11;
     TimerCreatedEvent timerCreated = 12;
     TimerFiredEvent timerFired = 13;
-    OrchestratorStartedEvent orchestratorStarted = 14;
+    WorkflowStartedEvent workflowStarted = 14;
     EventSentEvent eventSent = 16;
     EventRaisedEvent eventRaised = 17;
     ContinueAsNewEvent continueAsNew = 20;

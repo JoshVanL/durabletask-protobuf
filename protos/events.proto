@@ -67,19 +67,19 @@ message TaskFailedEvent {
     string taskExecutionID = 3;
 }
 
-message SubWorkflowInstanceCreatedEvent {
+message ChildWorkflowInstanceCreatedEvent {
     string instanceID = 1;
     string name = 2;
     google.protobuf.StringValue input = 4;
     TraceContext parentTraceContext = 5;
 }
 
-message SubWorkflowInstanceCompletedEvent {
+message ChildWorkflowInstanceCompletedEvent {
     int32 taskScheduledID = 1;
     google.protobuf.StringValue result = 2;
 }
 
-message SubWorkflowInstanceFailedEvent {
+message ChildWorkflowInstanceFailedEvent {
     int32 taskScheduledID = 1;
     TaskFailureDetails failureDetails = 2;
 }
@@ -98,7 +98,7 @@ message TimerFiredEvent {
     int32 timerID = 2;
 }
 
-message OrchestratorStartedEvent {
+message WorkflowStartedEvent {
     optional WorkflowVersion version = 1;
 }
 

@@ -25,6 +25,7 @@ import "google/protobuf/wrappers.proto";
 import "version.proto";
 import "history.proto";
 import "events.proto";
+import "state.proto";
 
 message RuntimeStateStalled {
   StalledReason reason = 1;
@@ -52,8 +53,22 @@ message WorkflowRuntimeState {
   optional RuntimeStateStalled stalled = 15;
 }
 
-// WorkflowRuntimeStateMessage holds an OrchestratorMessage and the target instance ID.
+// WorkflowRuntimeStateMessage holds an WorkflowMessage and the target instance ID.
 message WorkflowRuntimeStateMessage {
   HistoryEvent historyEvent = 1;
   string TargetInstanceID = 2;
+}
+
+message WorkflowMetadata {
+  string instanceId = 1;
+  string name = 2;
+  WorkflowStatus runtimeStatus = 3;
+  google.protobuf.Timestamp createdAt = 4;
+  google.protobuf.Timestamp lastUpdatedAt = 5;
+  google.protobuf.StringValue input = 6;
+  google.protobuf.StringValue output = 7;
+  google.protobuf.StringValue customStatus = 8;
+  TaskFailureDetails failureDetails = 9;
+  google.protobuf.Timestamp completedAt = 10;
+  string parentInstanceId = 11;
 }
