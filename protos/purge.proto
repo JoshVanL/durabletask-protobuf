@@ -13,7 +13,7 @@ import "state.proto";
 
 message PurgeInstancesRequest {
     oneof request {
-        string instanceId = 1;
+        string instanceID = 1;
         // TODO: @joshvanl: implement the filter-based purge.
         PurgeInstanceFilter purgeInstanceFilter = 2;
     }

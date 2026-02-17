@@ -7,6 +7,8 @@ option csharp_namespace = "Dapr.DurableTask.Protobuf";
 option java_package = "io.dapr.durabletask.implementation.protobuf";
 option go_package = "/api/protos";
 
+import "google/protobuf/empty.proto";
+
 import "schedule.proto";
 import "actions.proto";
 import "raise.proto";
@@ -15,9 +17,14 @@ import "suspend.proto";
 import "resume.proto";
 import "rerun.proto";
 import "list.proto";
+import "worker.proto";
+import "purge.proto";
 
-service Workflows {
-  // Starts a new workflow instance.
+// Deprecated: Use Workflow service instead.
+service TaskHubSidecarService {
+  // Sends a hello request to the sidecar service.
+  rpc Hello(google.protobuf.Empty) returns (google.protobuf.Empty);
+
   rpc ScheduleInstance(ScheduleInstanceRequest) returns (ScheduleInstanceResponse);
 
   // Gets the status of an existing workflow instance.
@@ -44,9 +51,30 @@ service Workflows {
   // Rerun a Workflow from a specific event ID of a workflow instance.
   rpc RerunWorkflowFromEvent(RerunWorkflowFromEventRequest) returns (RerunWorkflowFromEventResponse);
 
-  // List all workflow instance IDs.
-  rpc ListInstanceIDs(ListInstanceIDsRequest) returns (ListInstanceIDsResponse);
-
-  // Gets the full history of a workflow instance.
+  rpc ListInstanceIDs (ListInstanceIDsRequest) returns (ListInstanceIDsResponse);
   rpc GetInstanceHistory (GetInstanceHistoryRequest) returns (GetInstanceHistoryResponse);
+
+  // Purges the state of one or more orchestration instances.
+  rpc PurgeInstances (PurgeInstancesRequest) returns (PurgeInstancesResponse);
+
+  rpc CompleteActivityTask(ActivityResponse) returns (CompleteTaskResponse) {};
+  rpc CompleteOrchestratorTask(WorkflowResponse) returns (CompleteTaskResponse) {
+    option deprecated = true;
+  };
+  rpc CompleteWorkflowTask(WorkflowResponse) returns (CompleteTaskResponse);
+
+  // Starts a new workflow instance.
+  rpc StartInstance(ScheduleInstanceRequest) returns (ScheduleInstanceResponse) {
+    option deprecated = true;
+  };
+  // Moved to worker.
+  rpc GetWorkItems(GetWorkItemsRequest) returns (stream WorkItem) {
+    option deprecated = true;
+  };
+  rpc AbandonTaskActivityWorkItem(AbandonActivityTaskRequest) returns (AbandonActivityTaskResponse) {
+    option deprecated = true;
+  };
+  rpc AbandonTaskOrchestratorWorkItem(AbandonWorkflowTaskRequest) returns (AbandonWorkflowTaskResponse) {
+    option deprecated = true;
+  };
 }

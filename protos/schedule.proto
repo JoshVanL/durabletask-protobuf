@@ -23,5 +23,5 @@ message ScheduleInstanceRequest {
 }
 
 message ScheduleInstanceResponse {
-    string instanceId = 1;
+    string instanceID = 1;
 }

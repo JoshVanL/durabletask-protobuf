@@ -10,7 +10,7 @@ option go_package = "/api/protos";
 import "google/protobuf/wrappers.proto";
 
 message ResumeRequest {
-    string instanceId = 1;
+    string instanceID = 1;
     google.protobuf.StringValue reason = 2;
 }
 

@@ -21,8 +21,8 @@ message ListInstanceIDsRequest {
 
 // ListInstanceIDsResponse is the response to executing ListInstanceIDs.
 message ListInstanceIDsResponse {
-  // instanceIds is the list of instance IDs returned.
-  repeated string instanceIds = 1;
+  // instanceIDs is the list of instance IDs returned.
+  repeated string instanceIDs = 1;
 
   // continuationToken is the continuation token to use for pagination. If
   // there are no more pages, this will be null.

@@ -34,7 +34,7 @@ message RuntimeStateStalled {
 
 // WorkflowRuntimeState holds the current state for an workflow.
 message WorkflowRuntimeState {
-  string instanceId = 1;
+  string instanceID = 1;
   repeated HistoryEvent newEvents = 2;
   repeated HistoryEvent oldEvents = 3;
   repeated HistoryEvent pendingTasks = 4;
@@ -60,7 +60,7 @@ message WorkflowRuntimeStateMessage {
 }
 
 message WorkflowMetadata {
-  string instanceId = 1;
+  string instanceID = 1;
   string name = 2;
   WorkflowStatus runtimeStatus = 3;
   google.protobuf.Timestamp createdAt = 4;
@@ -71,4 +71,21 @@ message WorkflowMetadata {
   TaskFailureDetails failureDetails = 9;
   google.protobuf.Timestamp completedAt = 10;
   string parentInstanceId = 11;
+}
+
+
+message WorkflowStateInbox {
+  repeated HistoryEvent inbox = 1;
+  repeated HistoryEvent history = 2;
+  google.protobuf.StringValue customStatus = 3;
+  uint64 generation = 4;
+}
+
+message CreateWorkflowInstanceRequest {
+  HistoryEvent startEvent = 1;
+}
+
+message DurableTimer {
+  HistoryEvent timerEvent = 1;
+  uint64 generation = 2;
 }

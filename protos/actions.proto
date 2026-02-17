@@ -22,7 +22,7 @@ message ScheduleTaskAction {
 }
 
 message CreateChildWorkflowAction {
-    string instanceId = 1;
+    string instanceID = 1;
     string name = 2;
     google.protobuf.StringValue input = 4;
     optional TaskRouter router = 5;
@@ -42,7 +42,7 @@ message CompleteWorkflowAction {
 }
 
 message TerminateWorkflowAction {
-    string instanceId = 1;
+    string instanceID = 1;
     google.protobuf.StringValue reason = 2;
     bool recurse = 3;
 }
@@ -55,12 +55,13 @@ message WorkflowAction {
         CreateTimerAction createTimer = 4;
         CompleteWorkflowAction completeWorkflow = 6;
         TerminateWorkflowAction terminateWorkflow = 7;
+        WorkflowVersionNotAvailableAction workflowVersionNotAvailable = 10;
     }
     optional TaskRouter router = 9;
 }
 
 message WorkflowResponse {
-    string instanceId = 1;
+    string instanceID = 1;
     repeated WorkflowAction actions = 2;
     google.protobuf.StringValue customStatus = 3;
     string completionToken = 4;
@@ -91,7 +92,7 @@ message WorkflowState {
 }
 
 message GetInstanceRequest {
-    string instanceId = 1;
+    string instanceID = 1;
     bool getInputsAndOutputs = 2;
 }
 
@@ -103,10 +104,12 @@ message GetInstanceResponse {
 // GetInstanceHistoryRequest is used to get the full history of an
 // workflow instance.
 message GetInstanceHistoryRequest {
-    string instanceId = 1;
+    string instanceID = 1;
 }
 
 // GetInstanceHistoryResponse is the response to executing GetInstanceHistory.
 message GetInstanceHistoryResponse {
     repeated HistoryEvent events = 1;
 }
+
+message WorkflowVersionNotAvailableAction {}

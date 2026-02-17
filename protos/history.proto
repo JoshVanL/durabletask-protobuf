@@ -14,7 +14,8 @@ import "events.proto";
 message HistoryEvent {
   // Unused fields have been removed so some numbers have been skip. When
   // adding new fields, please use the next available highest number.
-  int32 eventId = 1;
+  // TODO: @joshvanl change to optional and account for -1.
+  optional int32 eventID= 1;
   google.protobuf.Timestamp timestamp = 2;
 
   oneof eventType {
@@ -30,7 +31,7 @@ message HistoryEvent {
     TimerCreatedEvent timerCreated = 12;
     TimerFiredEvent timerFired = 13;
     WorkflowStartedEvent workflowStarted = 14;
-    EventSentEvent eventSent = 16;
+    WorkflowCompletedEvent workflowCompleted = 15;
     EventRaisedEvent eventRaised = 17;
     ContinueAsNewEvent continueAsNew = 20;
     ExecutionSuspendedEvent executionSuspended = 21;

@@ -72,6 +72,10 @@ message ChildWorkflowInstanceCreatedEvent {
     string name = 2;
     google.protobuf.StringValue input = 4;
     TraceContext parentTraceContext = 5;
+
+    // If defined, indicates that this task was the starting point of a new
+    // workflow execution as the result of a rerun operation.
+    optional RerunParentInstanceInfo rerunParentInstanceInfo = 6;
 }
 
 message ChildWorkflowInstanceCompletedEvent {
@@ -102,11 +106,7 @@ message WorkflowStartedEvent {
     optional WorkflowVersion version = 1;
 }
 
-message EventSentEvent {
-    string instanceID = 1;
-    string name = 2;
-    google.protobuf.StringValue input = 3;
-}
+message WorkflowCompletedEvent {};
 
 message EventRaisedEvent {
     string name = 1;
