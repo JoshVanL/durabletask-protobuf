@@ -32,6 +32,10 @@ message TaskRouter {
     string sourceAppID = 1;
     optional string targetAppID = 2;
     optional string targetAppNamespace = 3;
+    // sourceAppNamespace pairs with sourceAppID to disambiguate the
+    // emitter when events cross namespaces. Empty means "same namespace
+    // as the receiver" for backwards-compatible single-namespace wiring.
+    optional string sourceAppNamespace = 4;
 }
 
 message WorkflowVersion {

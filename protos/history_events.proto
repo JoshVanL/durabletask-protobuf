@@ -13,11 +13,14 @@ import "attestation.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
 
-// A contiguous range of events produced by a single app.
-// Used to track which app produced which events when history from
-// multiple workflows is flattened into a single PropagatedHistory.
+// A contiguous range of events produced by a single workflow.
+// Used to track which (app, namespace) produced which events when
+// history from multiple workflows is flattened into a single
+// PropagatedHistory. The router carries the source identity in its
+// sourceAppID / sourceAppNamespace fields; target_* are unset on chunks
+// because a chunk is emitted, not routed.
 message PropagatedHistoryChunk {
-    string appId = 1;
+    TaskRouter router = 1;
     // Index of the first event in this chunk (inclusive),
     // into PropagatedHistory.events.
     int32 startEventIndex = 2;

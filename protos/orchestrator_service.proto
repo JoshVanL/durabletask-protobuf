@@ -77,6 +77,10 @@ message CreateInstanceRequest {
     google.protobuf.StringValue executionId = 7;
     map<string, string> tags = 8;
     TraceContext parentTraceContext = 9;
+    // router optionally targets a workflow on a different app and/or
+    // namespace. When set, the runtime routes the schedule to the named
+    // target rather than the local sidecar.
+    optional TaskRouter router = 10;
 }
 
 message CreateInstanceResponse {
@@ -86,6 +90,9 @@ message CreateInstanceResponse {
 message GetInstanceRequest {
     string instanceId = 1;
     bool getInputsAndOutputs = 2;
+    // router optionally targets a workflow hosted on a different app and/or
+    // namespace.
+    optional TaskRouter router = 3;
 }
 
 message GetInstanceResponse {
@@ -97,6 +104,9 @@ message RaiseEventRequest {
     string instanceId = 1;
     string name = 2;
     google.protobuf.StringValue input = 3;
+    // router optionally targets a workflow hosted on a different app and/or
+    // namespace.
+    optional TaskRouter router = 4;
 }
 
 message RaiseEventResponse {
@@ -107,6 +117,9 @@ message TerminateRequest {
     string instanceId = 1;
     google.protobuf.StringValue output = 2;
     bool recursive = 3;
+    // router optionally targets a workflow hosted on a different app and/or
+    // namespace.
+    optional TaskRouter router = 4;
 }
 
 message TerminateResponse {
@@ -116,6 +129,9 @@ message TerminateResponse {
 message SuspendRequest {
     string instanceId = 1;
     google.protobuf.StringValue reason = 2;
+    // router optionally targets a workflow hosted on a different app and/or
+    // namespace.
+    optional TaskRouter router = 3;
 }
 
 message SuspendResponse {
@@ -125,6 +141,9 @@ message SuspendResponse {
 message ResumeRequest {
     string instanceId = 1;
     google.protobuf.StringValue reason = 2;
+    // router optionally targets a workflow hosted on a different app and/or
+    // namespace.
+    optional TaskRouter router = 3;
 }
 
 message ResumeResponse {
@@ -148,6 +167,10 @@ message PurgeInstancesRequest {
     // absolutely necessary.
     // Defaults to false.
     optional bool force = 4;
+
+    // router optionally targets a workflow hosted on a different app and/or
+    // namespace.
+    optional TaskRouter router = 5;
 }
 
 message PurgeInstanceFilter {
@@ -216,6 +239,10 @@ message RerunWorkflowFromEventRequest {
   // rerunning from a child workflow. Only accepted if the event ID given is
   // targeting a child workflow creation event.
   optional string newChildWorkflowInstanceID = 6;
+
+  // router optionally targets the source instance and/or the new instance on
+  // a different app or namespace.
+  optional TaskRouter router = 7;
 }
 
 // RerunWorkflowFromEventResponse is the response to executing
